@@ -19,9 +19,13 @@ int main(void){
     scanf("%s", smsg);
     printf("Vveli %s \n", smsg);
 
-    if(MsgSend(coid, smsg, strlen(smsg)+ 1, rmsg, sizeof(rmsg)) == -1)
+if(MsgSend(coid, smsg, strlen(smsg)+ 1, rmsg, sizeof(rmsg)) == -1)
 	{
         printf("Error MsgSend \n");
+    }
+else
+    {
+        printf("Otvet: %s\n", rmsg);
     }
 ConnectDetach(coid);
     return 1;
