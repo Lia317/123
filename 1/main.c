@@ -3,6 +3,6 @@
 
 
 int main(){
-	printf("Harina Natalia I993");
+	printf("Harina Natalia I993 \n");
 	return 0;
 }
