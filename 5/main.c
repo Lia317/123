@@ -9,53 +9,48 @@
 
 void * long_thread(void *notused)
 {
-
-    printf("potok time>10 cek \n");
-    sleep(20);
+	printf("potok time>10 cek \n");
+	sleep(20);
 }
 
 int main(void)
 {
+	time_t now;
+	char buf[27];
+
+	uint64_t timeout;
+	struct sigevent event;
+	int rval;
+	pthread_t thread_id;
+	time(&now);
 	printf("Harina Natalia I993\n");
-    time_t now;
-    char buf[27];
+	printf("prog timer: %s", ctime_r(&now, buf));
+	event.sigev_notify = SIGEV_UNBLOCK;
 
-    uint64_t timeout;
-    struct sigevent event;
-    int rval;
-    pthread_t thread_id;
-    time(&now);
-    printf("prog timer: %s", ctime_r(&now, buf));
-    event.sigev_notify = SIGEV_UNBLOCK;
- 
-    pthread_create(&thread_id, NULL, long_thread, NULL);
+	pthread_create(&thread_id, NULL, long_thread, NULL);
 
-    timeout = 10LL*SEC_NSEC;
-    TimerTimeout(CLOCK_REALTIME, _NTO_TIMEOUT_JOIN, &event, &timeout, NULL);
+	timeout = 10LL*SEC_NSEC;
+	TimerTimeout(CLOCK_REALTIME, _NTO_TIMEOUT_JOIN, &event, &timeout, NULL);
 
-    rval = pthread_join(thread_id, NULL);
-    if (rval == ETIMEDOUT)
-    {
-        time(&now);
-        printf("istekli 10 sekynd, potok %d vipolniaetsia! %s", thread_id, ctime_r(&now, buf));
-    }
-    sleep(5);
+	rval = pthread_join(thread_id, NULL);
+	if (rval == ETIMEDOUT)
+	{
+		time(&now);
+		printf("istekli 10 sekynd, potok %d vipolniaetsia! %s", thread_id, ctime_r(&now, buf));
+	}
+	sleep(5);
 
-    TimerTimeout(CLOCK_REALTIME, _NTO_TIMEOUT_JOIN, &event, &timeout, NULL);
-    rval = pthread_join(thread_id, NULL);
-    if (rval == ETIMEDOUT)
-    {
-        time(&now);
-        printf("potok %d>25 cek! %s", thread_id, ctime_r(&now, buf));
-    }
-    else
-    {
-        time(&now);
-        printf("potok %d end %s", thread_id, ctime_r(&now, buf));
-    }
-    return(1);
+	TimerTimeout(CLOCK_REALTIME, _NTO_TIMEOUT_JOIN, &event, &timeout, NULL);
+	rval = pthread_join(thread_id, NULL);
+	if (rval == ETIMEDOUT)
+	{
+		time(&now);
+		printf("potok %d>25 cek! %s", thread_id, ctime_r(&now, buf));
+	}
+	else
+	{
+		time(&now);
+		printf("potok %d end %s", thread_id, ctime_r(&now, buf));
+	}
+	return(1);
 }
-
-
-
-
